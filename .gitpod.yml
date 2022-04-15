@@ -3,10 +3,10 @@ image:
   
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
-  - init: cd portal && yarn # runs during prebuild
-    command: echo 'Enjoy'
+  - init: git clone https://github.com/CopernicaMarketingSoftware/AMQP-CPP
+    command: echo 'Enjoy First' \ echo 'Enjoy Second'
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
-  - port: 9999 # POCO Server
+  - port: 9999 # App Server
     onOpen: notify
