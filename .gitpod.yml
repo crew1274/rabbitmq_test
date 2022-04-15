@@ -3,7 +3,7 @@ image:
   
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
-  - init: docker run -i -t -d --restart=always --name rabbitmq -p 5672:5672 -p 156sss72:15672 rabbitmq:3.9-management
+  - init: docker run -i -t -d --restart=always --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management
     command: echo 'Enjoy'
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
