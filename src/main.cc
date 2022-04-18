@@ -1,22 +1,13 @@
-
-/**
- *  LibBoostAsio.cpp
- * 
- *  Test program to check AMQP functionality based on Boost's asio io_service.
- * 
- *  @author Gavin Smith <gavin.smith@coralbay.tv>
- *
- *  Compile with g++ -std=c++14 src/main.cc -o main.out -lpthread -lboost_system -lamqpcpp
- */
-/**
- *  Dependencies
- */
+#include <boost/asio/executor_work_guard.hpp>
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/strand.hpp>
 #include <boost/asio/deadline_timer.hpp>
 
+
 #include <amqpcpp.h>
 #include <amqpcpp/libboostasio.h>
+
+// g++ -std=c++14 src/main.cc -o main.out -lpthread -lboost_system -lamqpcpp
 /**
  *  Main program
  *  @return int
@@ -36,38 +27,31 @@ int main()
     
     // we need a channel too
     AMQP::TcpChannel channel(&connection);
-    while(1)
+    
+    for(uint i=0; i<10; i++)
     {
         channel.startTransaction();
         channel.publish("test", "test", "my first message test");
         channel.commitTransaction()
         .onSuccess([]()
         {
-            std::cout << "all messages were successfully published" << std::endl;
+            // std::cout << "all messages were successfully published" << std::endl;
         })
         .onError([](const char *message)
         {
             // none of the messages were published
             // now we have to do it all over again
-             std::cerr << message << std::endl;
-            
+            // std::cerr << message << std::endl;
         });
-        sleep(1);
     }
-
-
-    // create a temporary queue
-    // channel.declareQueue(AMQP::exclusive).onSuccess( [&connection] (const std::string &name, uint32_t messagecount, uint32_t consumercount)
-    // {
-        
-    //     // report the name of the temporary queue
-    //     std::cout << "declared queue " << name << std::endl;
-        
-    //     // now we can close the connection
-    //     connection.close();
-    // });
+    
     connection.close();
-    // run the handler
-    // a t the moment, one will need SIGINT to stop.  In time, should add signal handling through boost API.
+
+    // boost::asio::io_service::work work(service);
+
+    // service.run();
+    // service.stop();
+    // service.reset();
+
     return service.run();
 }
